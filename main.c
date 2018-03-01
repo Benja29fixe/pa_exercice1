@@ -53,7 +53,7 @@ int main(int argc,char**argv){
   affichage(G.m, G.n, G);
 
   
-  /*
+  
 
   printf("1/coordonnées de depart : ");
   scanf("%d %d", &nb1, &nb2);
@@ -64,7 +64,7 @@ int main(int argc,char**argv){
 
   Affiche(&S);
   
-  
+  /*
    printf("2/ coordonnées pour verifier si case noire : ");
   scanf("%d %d", &nb5, &nb6);
   if(CaseEstNoire(&G, nb5, nb6)==1) {
@@ -85,7 +85,7 @@ int main(int argc,char**argv){
   /*  printf("4/ couleur à trouver la plus proche de (0,0) : ");
       scanf("%d", &nb11);*/
   
-  RechercheCaseNaif_c(&G, 6, 0, 0, &nb9, &nb10);
+  RechercheCaseNaif_c(&G, 1, 0, 0, &nb9, &nb10);
   printf("\n\n<%d %d>\n", nb9, nb10);
   
   /*

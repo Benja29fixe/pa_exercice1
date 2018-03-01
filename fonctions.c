@@ -89,7 +89,7 @@ void RechercheCaseNaif_c(Grille *G,int c,int i, int j, int *k, int *l)
   int *tab;
   int p=0;
   Solution S;
-  int min=S.cptr_pas;
+  int min=(G->m)*(G->n);
 
   for(x=0; x<(G->m); x++){
     for(y=0; y<(G->n); y++){
