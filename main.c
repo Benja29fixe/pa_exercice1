@@ -18,7 +18,7 @@ int main(int argc,char**argv){
   int nb1;
   int nb2;
   int nb3;
-  int nb4, nb5, nb6, nb7, nb8, nb9, nb10, nb11, nb12;
+  int nb4, nb5, nb6, nb7, nb8, nb9, nb10, nb11, nb12, nb13;
 
   if(argc!=5){
     printf("usage: %s <nb_lignes> <nb_colonnes> <nb_couleur> <graine>\n",argv[0]);
@@ -89,9 +89,15 @@ int main(int argc,char**argv){
   printf("\n\n<%d %d>\n", nb9, nb10);
   
   
-  RechercheCaseNaif_nn(&G, 0, 0, &nb11, &nb12);
-  printf("\n1ere case nn et piece nn : <%d %d>\n", nb11, nb12);
-  
+  nb13=RechercheCaseNaif_nn(&G, 0, 0, &nb11, &nb12);
+  printf("\n1ere case nn et piece nn : <%d %d>\ncpt : %d\n", nb11, nb12, nb13);
+
+
+  printf("\n");
+
+  algo_naif(&G, &S);
+  affichage(G.m, G.n, G);
+
   
   return 0;
 }

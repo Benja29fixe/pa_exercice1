@@ -81,6 +81,9 @@ int RobotPortePieceCouleur(Grille* G){
 	return c.robot;
 }
 
+/***********************************
+
+***********************************/
 void RechercheCaseNaif_c(Grille *G,int c,int i, int j, int *k, int *l)
 {
   int x, y;
@@ -122,8 +125,10 @@ void RechercheCaseNaif_c(Grille *G,int c,int i, int j, int *k, int *l)
   }
 }
 
+/***********************************
 
-void RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
+***********************************/
+int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 {
    int x, y;
   int cpt=0;
@@ -137,18 +142,16 @@ void RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
     for(y=0; y<(G->n); y++){
       if((PieceEstPasNoire(G, x, y)==1) && ((x!=i) || (y!=j))){
 	cpt++;
-	printf("%d %d -> %d \n", x, y, cpt);
       }
     }
   }
-  printf("\n compteur de cases non noires : %d \n", cpt);
 
   tab=(int*)malloc(cpt*sizeof(int));
 
   for(a=0; a<G->m; a++){
     for(b=0; b<G->n; b++){
       
-      if((PieceEstPasNoire(G, a, b)==1) && (a!=i) && (b!=j)){
+      if((PieceEstPasNoire(G, a, b)==1) && ((a!=i) || (b!=j))){
 	Solution_init(&S);
 	PlusCourtChemin(&S, i, j, a, b);
 
@@ -164,5 +167,30 @@ void RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
       }
     }
   }
+  return cpt;
 }
 
+/***********************************
+
+***********************************/
+void algo_naif(Grille *G, Solution *S)
+{
+  int k;
+  int l;
+  int n_k;
+  int n_l;
+
+  while(RechercheCaseNaif_nn(G, 0, 0, &k, &l)>0){
+    if(G->T[k][l].robot=-1){
+      changement_case(G, k, l);
+      swap_case(G);
+      
+    }else{
+      RechercheCaseNaif_c(G, G->T[k][l].robot, k, l, &n_k, &n_l);
+      changement_case(G, n_k, n_l);
+      swap_case(G);
+    }
+  }
+}
+  
+  
