@@ -13,6 +13,5 @@ int CouleurPorteeParRobot(Grille *G);
 
 void RechercheCaseNaif_c(Grille *G,int c,int i, int j, int *k, int *l);
 
-/*
 void RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l);
-*/
+

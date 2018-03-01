@@ -122,3 +122,47 @@ void RechercheCaseNaif_c(Grille *G,int c,int i, int j, int *k, int *l)
   }
 }
 
+
+void RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
+{
+   int x, y;
+  int cpt=0;
+  int a, b;
+  int *tab;
+  int p=0;
+  Solution S;
+  int min=(G->m)*(G->n);
+
+  for(x=0; x<(G->m); x++){
+    for(y=0; y<(G->n); y++){
+      if((PieceEstPasNoire(G, x, y)==1) && ((x!=i) || (y!=j))){
+	cpt++;
+	printf("%d %d -> %d \n", x, y, cpt);
+      }
+    }
+  }
+  printf("\n compteur de cases non noires : %d \n", cpt);
+
+  tab=(int*)malloc(cpt*sizeof(int));
+
+  for(a=0; a<G->m; a++){
+    for(b=0; b<G->n; b++){
+      
+      if((PieceEstPasNoire(G, a, b)==1) && (a!=i) && (b!=j)){
+	Solution_init(&S);
+	PlusCourtChemin(&S, i, j, a, b);
+
+	tab[p]=S.cptr_pas;
+
+	if(tab[p]<min){
+	  min=tab[p];
+	  *k=a;
+	  *l=b;
+	}
+
+	p++;
+      }
+    }
+  }
+}
+

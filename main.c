@@ -54,7 +54,7 @@ int main(int argc,char**argv){
 
   
   
-
+  /*
   printf("1/coordonnées de depart : ");
   scanf("%d %d", &nb1, &nb2);
    printf("coordonnées d'arrivee : ");
@@ -63,7 +63,7 @@ int main(int argc,char**argv){
   PlusCourtChemin(&S, nb1, nb2, nb3, nb4);
 
   Affiche(&S);
-  
+  */
   /*
    printf("2/ coordonnées pour verifier si case noire : ");
   scanf("%d %d", &nb5, &nb6);
@@ -88,10 +88,10 @@ int main(int argc,char**argv){
   RechercheCaseNaif_c(&G, 1, 0, 0, &nb9, &nb10);
   printf("\n\n<%d %d>\n", nb9, nb10);
   
-  /*
+  
   RechercheCaseNaif_nn(&G, 0, 0, &nb11, &nb12);
   printf("\n1ere case nn et piece nn : <%d %d>\n", nb11, nb12);
-  */
+  
   
   return 0;
 }
