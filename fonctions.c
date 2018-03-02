@@ -173,24 +173,28 @@ int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 /***********************************
 
 ***********************************/
+
 void algo_naif(Grille *G, Solution *S)
 {
-  int k;
-  int l;
-  int n_k;
-  int n_l;
+  int i=0;
+  int j=0;
+  int k, l;
 
-  while(RechercheCaseNaif_nn(G, 0, 0, &k, &l)>0){
-    if(G->T[k][l].robot=-1){
+  while(RechercheCaseNaif_nn(G, i, j, &k, &l)>0){
+    if(G->T[i][j].robot==-1){
       changement_case(G, k, l);
       swap_case(G);
-      
+      i=k;
+      j=l;
+    
     }else{
-      RechercheCaseNaif_c(G, G->T[k][l].robot, k, l, &n_k, &n_l);
-      changement_case(G, n_k, n_l);
+      RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
+      changement_case(G, k, l);
       swap_case(G);
+      //   printf("[%d %d]\n", i, j);
+      i=k;
+      j=l;
     }
   }
 }
-  
-  
+
