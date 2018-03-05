@@ -108,6 +108,7 @@ void RechercheCaseNaif_c(Grille *G, int c,int i, int j, int *k, int *l)
     for(b=0; b<G->n; b++){
       
       if((G->T[a][b].fond==c)){
+	if(CaseEstNoire(G, a, b)==0){
 	Solution_init(&S);
 	PlusCourtChemin(&S, i, j, a, b);
 
@@ -118,8 +119,9 @@ void RechercheCaseNaif_c(Grille *G, int c,int i, int j, int *k, int *l)
 	  *k=a;
 	  *l=b;
 	}
-
+	
 	p++;
+	}
       }
     }
   }
