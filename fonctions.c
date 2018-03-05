@@ -84,7 +84,7 @@ int RobotPortePieceCouleur(Grille* G){
 /***********************************
 
 ***********************************/
-void RechercheCaseNaif_c(Grille *G,int c,int i, int j, int *k, int *l)
+void RechercheCaseNaif_c(Grille *G, int c,int i, int j, int *k, int *l)
 {
   int x, y;
   int cpt=0;
@@ -180,18 +180,22 @@ void algo_naif(Grille *G, Solution *S)
   int j=0;
   int k, l;
 
-  while(RechercheCaseNaif_nn(G, i, j, &k, &l)>0){
-    if(G->T[i][j].robot==-1){
+  while((RechercheCaseNaif_nn(G, i, j, &k, &l)>0)){
+    if((G->T[i][j].robot==-1)){
+      swap_case(G);
+      printf("if avnt : [%d %d] %d\n", i, j, G->T[i][j].robot);
+      RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
       changement_case(G, k, l);
       swap_case(G);
       i=k;
       j=l;
+      printf("if apres : [%d %d] %d\n", i, j,  G->T[i][j].robot);
     
     }else{
       RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
       changement_case(G, k, l);
       swap_case(G);
-      //   printf("[%d %d]\n", i, j);
+      printf("ELSE : [%d %d] %d\n", k, l,  G->T[k][l].robot);
       i=k;
       j=l;
     }
