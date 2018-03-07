@@ -96,8 +96,9 @@ int main(int argc,char**argv){
   printf("\n");
 
   algo_naif(&G, &S);
+  Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
   affichage(G.m, G.n, G);
-
+  Affiche(&S);
   
   return 0;
 }
