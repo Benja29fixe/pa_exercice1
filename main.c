@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
 #include "Grille.h"
 #include "Solution.h"
 #include "API_AffGrille.h"
-#include "fonctions.h"
+#include "fonctions_ex1_p1.h"
+#include "fonctions_ex3_p1.h"
 
- 
 int main(int argc,char**argv){
   
   Grille G;
@@ -15,10 +14,9 @@ int main(int argc,char**argv){
   Solution S;
   int graine;
   int i,j;
-  int nb1;
-  int nb2;
-  int nb3;
-  int nb4, nb5, nb6, nb7, nb8, nb9, nb10, nb11, nb12, nb13;
+ 
+  int nb9, nb10, nb11, nb12, nb13;
+  LDC ldc;
 
   if(argc!=5){
     printf("usage: %s <nb_lignes> <nb_colonnes> <nb_couleur> <graine>\n",argv[0]);
@@ -48,42 +46,8 @@ int main(int argc,char**argv){
 
   Solution_init(&S);
 
-  /*premier affichage de la grille */
-  
+  /*Premier affichage de la grille sur le terminal*/
   affichage(G.m, G.n, G);
-
-  
-  
-  /*
-  printf("1/coordonnées de depart : ");
-  scanf("%d %d", &nb1, &nb2);
-   printf("coordonnées d'arrivee : ");
-   scanf("%d %d", &nb3, &nb4);
-
-  PlusCourtChemin(&S, nb1, nb2, nb3, nb4);
-
-  Affiche(&S);
-  */
-  /*
-   printf("2/ coordonnées pour verifier si case noire : ");
-  scanf("%d %d", &nb5, &nb6);
-  if(CaseEstNoire(&G, nb5, nb6)==1) {
-    printf("Case NOIRE \n");
-  }else{ printf("Case coloree!\n");
-  }
-  */
-  /*
-   printf("3/ coordonnées pour verifier si PIECE pas noire : ");
-  scanf("%d %d", &nb7, &nb8);
-  if(PieceEstPasNoire(&G, nb7, nb8)==1) {
-    printf("Piece pas NOIRE \n");
-  }else{
-    printf("Piece noire!\n");
-  }
-  */
-  
-  /*  printf("4/ couleur à trouver la plus proche de (0,0) : ");
-      scanf("%d", &nb11);*/
   
   RechercheCaseNaif_c(&G, 1, 0, 0, &nb9, &nb10);
   printf("\n\n<%d %d>\n", nb9, nb10);
@@ -97,8 +61,17 @@ int main(int argc,char**argv){
 
   algo_naif(&G, &S);
   Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
+  /*Après algo_naif, affichage de la grille sur le terminal*/
   affichage(G.m, G.n, G);
+
+  /* Affiche le nombre de pas et le chemin */
   Affiche(&S);
+
+
+  LDCInitialise(&ldc);
+  printf("\nliste vide : %d\n", LDCVide(&ldc));
+
+
   
-  return 0;
+  return 0;  
 }

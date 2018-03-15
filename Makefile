@@ -1,7 +1,10 @@
 all: main
 
-fonctions.o: fonctions.h fonctions.c
-	gcc -c fonctions.c -o fonctions.o
+fonctions_ex1_p1.o: fonctions_ex1_p1.h fonctions_ex1_p1.c
+	gcc -c fonctions_ex1_p1.c -o fonctions_ex1_p1.o
+
+fonctions_ex3_p1.o: fonctions_ex3_p1.h fonctions_ex3_p1.c
+	gcc -c fonctions_ex3_p1.c -o fonctions_ex3_p1.o
 
 entree_sortie.o: entree_sortie.c entree_sortie.h
 	gcc -c entree_sortie.c
@@ -15,11 +18,11 @@ Grille.o: Grille.c Grille.h Solution.h
 API_AffGrille.o: API_AffGrille.c API_AffGrille.h Grille.h
 	gcc -c API_AffGrille.c
 
-main.o: main.c Grille.h API_AffGrille.h Solution.h 
+main.o: main.c Grille.h API_AffGrille.h Solution.h
 	gcc -c main.c 
 
-main: main.o API_AffGrille.o Grille.o Solution.o entree_sortie.o fonctions.o
-	gcc -o main main.o API_AffGrille.o Grille.o Solution.o fonctions.o entree_sortie.o -lSDL
+main: main.o API_AffGrille.o Grille.o Solution.o entree_sortie.o fonctions_ex1_p1.o fonctions_ex3_p1.o
+	gcc -o main main.o API_AffGrille.o Grille.o Solution.o fonctions_ex1_p1.o fonctions_ex3_p1.o entree_sortie.o -lSDL
 
 
 clean:

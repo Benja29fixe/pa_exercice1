@@ -17,7 +17,6 @@ void affichage(int ligne, int colonne, Grille G)
   }
 }
 
-
 /***********************************
 Fonction plus court chemin :
 ajoute une séquence de caracteres à Solution
@@ -73,7 +72,7 @@ int PieceEstPasNoire(Grille* G, int i, int j)
 }
 
 /***********************************
-
+Verifie si robot porte une piece de couleur
 ***********************************/
 int RobotPortePieceCouleur(Grille* G){ 
 	CCase c=G->T[G->ir][G->jr];
@@ -81,9 +80,10 @@ int RobotPortePieceCouleur(Grille* G){
 }
 
 /***********************************
-
+Recherche la case de couleur c la plus proche
+d'un point donné
 ***********************************/
-void RechercheCaseNaif_c(Grille *G, int c,int i, int j, int *k, int *l)
+void RechercheCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l)
 {
   int x, y;
   int cpt=0;
@@ -124,7 +124,8 @@ void RechercheCaseNaif_c(Grille *G, int c,int i, int j, int *k, int *l)
 }
 
 /***********************************
-
+Recherche la première case non-noire
+la plus proche d'un point donné
 ***********************************/
 int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 {
@@ -150,8 +151,6 @@ int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
       
       if((PieceEstPasNoire(G, a, b)==1) && ((a!=i) || (b!=j))){
 
-
-
 	if(tab[p]<min){
 	  min=tab[p];
 	  *k=a;
@@ -166,16 +165,16 @@ int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 }
 
 /***********************************
-
+Résolution de la grille de jeu
+grace à l'algo naif 
 ***********************************/
-
 void algo_naif(Grille *G, Solution *S)
 {
   int i=0;
   int j=0;
   int k, l;
 
-  while((RechercheCaseNaif_nn(G, i, j, &k, &l)>0)){
+  while((RechercheCaseNaif_nn(G, i, j, &k, &l))>0){
     if((G->T[i][j].robot==-1)){
       swap_case(G);
       Ajout_action(S,'S');
@@ -199,13 +198,13 @@ void algo_naif(Grille *G, Solution *S)
      
     }
   }
-
+  
   RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
   PlusCourtChemin(S,i,j,k,l);
   changement_case(G, k, l);
   Ajout_action(S,'S');
   swap_case(G);
- 
+  
 }
 
 /**********************************/
