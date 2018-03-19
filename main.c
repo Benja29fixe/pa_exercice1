@@ -15,7 +15,7 @@ int main(int argc,char**argv){
   int graine;
   int i,j;
  
-  int nb9, nb10, nb11, nb12, nb13;
+  int nb1, nb2, nb3, nb4, nb5;
   LDC ldc;
 
   if(argc!=5){
@@ -49,29 +49,52 @@ int main(int argc,char**argv){
   /*Premier affichage de la grille sur le terminal*/
   affichage(G.m, G.n, G);
   
-  RechercheCaseNaif_c(&G, 1, 0, 0, &nb9, &nb10);
-  printf("\n\n<%d %d>\n", nb9, nb10);
+  RechercheCaseNaif_c(&G, 1, 0, 0, &nb1, &nb2);
+  printf("\n\n<%d %d>\n", nb1, nb2);
   
   
-  nb13=RechercheCaseNaif_nn(&G, 0, 0, &nb11, &nb12);
-  printf("\n1ere case nn et piece nn : <%d %d>\ncpt : %d\n", nb11, nb12, nb13);
+  nb5=RechercheCaseNaif_nn(&G, 0, 0, &nb3, &nb4);
+  printf("\n1ere case nn et piece nn : <%d %d>\ncpt : %d\n", nb3, nb4, nb5);
 
 
   printf("\n");
 
+/**** EXERCICE 1 : ALGO NAIF ****/
   algo_naif(&G, &S);
   Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
+  
   /*Après algo_naif, affichage de la grille sur le terminal*/
   affichage(G.m, G.n, G);
 
   /* Affiche le nombre de pas et le chemin */
   Affiche(&S);
 
-
+  
+/**** EXERCICE 3 : ALGO COULEUR ****/
   LDCInitialise(&ldc);
   printf("\nliste vide : %d\n", LDCVide(&ldc));
 
+  LDCInsererEnFin(&ldc, 3, 5);
+  LDCInsererEnFin(&ldc, 4, 32);
+  LDCInsererEnFin(&ldc, 9, 10);
+  LDCInsererEnFin(&ldc, 51, 78);
+  
+  /*Affichage de la liste ldc */
+  LDCafficher(&ldc);
 
+  /*Creation d'une cellule */
+  CelluleLDC *c=creerCellule(3, 5);
+
+  /* On efface une cellule */
+  LDC_enleverCellule(&ldc, c);
+
+  /* Affichage de la nouvelle liste */
+  LDCafficher(&ldc);
+
+  /* Désalloue la liste et vérifie l'affichage */
+  LDCdesalloue(&ldc);
+  LDCafficher(&ldc);
+ 
   
   return 0;  
 }
