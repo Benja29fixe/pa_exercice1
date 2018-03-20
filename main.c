@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "Grille.h"
 #include "Solution.h"
 #include "API_AffGrille.h"
@@ -30,6 +31,7 @@ int main(int argc,char**argv){
     printf("Il doit y avoir plus de colonnes que de lignes.\n");
     exit(1);
   }
+  
   G.nbcoul=atoi(argv[3]);
   if (G.nbcoul>G.m*G.n){
     printf("Il ne doit pas y avoir plus de couleurs que de cases.\n");
@@ -82,19 +84,16 @@ int main(int argc,char**argv){
   /*Affichage de la liste ldc */
   LDCafficher(&ldc);
 
-  /*Creation d'une cellule */
-  CelluleLDC *c=creerCellule(3, 5);
-
-  /* On efface une cellule */
-  LDC_enleverCellule(&ldc, c);
-
-  /* Affichage de la nouvelle liste */
-  LDCafficher(&ldc);
-
-  /* Désalloue la liste et vérifie l'affichage */
-  LDCdesalloue(&ldc);
-  LDCafficher(&ldc);
  
+
+ 
+
+  CelluleLDC *c1=LDCrechercherPlusProcheCase(&ldc, 50, 78);
+
+  printf("case la p proche : %d %d\n", c1->i, c1->j);
+
+
+  algo_parcouleur(&G, &S);
   
   return 0;  
 }

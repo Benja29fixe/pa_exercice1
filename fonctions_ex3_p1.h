@@ -27,10 +27,11 @@ void LDCInitialise(LDC *ldc);
 
 int LDCVide(LDC *ldc);
 // qui teste si la liste est vide
-/*
-void LDCInsererEnFin(LDC *ldc,int i, int j); //qui insere une nouvelle cellule en fin
 
-void LDC_enleverCellule(LDC *ldc ,CelluleLDC *cel);
+void LDCInsererEnFin(LDC *ldc, int i, int j);
+//qui insere une nouvelle cellule en fin
+
+void LDC_enleverCellule(LDC *ldc, CelluleLDC *cel);
 // qui supprime une cellule a partir d un pointeur sur la cellule
 
 void LDCafficher(LDC *ldc);
@@ -39,4 +40,6 @@ void LDCafficher(LDC *ldc);
 void LDCdesalloue(LDC *ldc);
 // qui desalloue toute la liste (si elle n est pas vide a la fin)
 
-*/
+CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b);
+
+void algo_parcouleur(Grille *G, Solution *S);

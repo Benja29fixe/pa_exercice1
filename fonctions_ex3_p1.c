@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include "Grille.h"
 #include "Solution.h"
 #include "API_AffGrille.h"
+#include "fonctions_ex1_p1.h"
 #include "fonctions_ex3_p1.h"
 
 /* Création d'une cellule de la liste doublement chainée */
@@ -101,4 +103,112 @@ void LDCdesalloue(LDC *ldc)
     ldc->premier=cel;
   }
 }
+
+CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b)
+{
+  CelluleLDC *cel=ldc->premier;
+  CelluleLDC *celMini=creerCellule(cel->i, cel->j);
+
+  printf("%d %d, somme : %d\n", celMini->i, celMini->j, ( abs((celMini->i)-a)+abs((celMini->j)-b) ));
+  
+  while(cel->suiv){
+    printf("%d %d, somme : %d\n", celMini->i, celMini->j, ( abs((celMini->i)-a)+abs((celMini->j)-b) ));
+
+    
+    if(  ( abs((cel->suiv->i)-a)+abs((cel->suiv->j)-b) ) < ( abs((celMini->i)-a)+abs((celMini->j)-b) )   ){
+
+      celMini->i=cel->suiv->i;
+      celMini->j=cel->suiv->j;
+     
+    }
+    
+    cel=cel->suiv;
+  }
+
+  return celMini;
+}
+
+void algo_parcouleur(Grille *G, Solution *S)
+{
+  int f, i, j;
+  int k=0;
+  int it=(G->m)*(G->n);
+  int a=0;
+  int b=0;
+  int couleur_piece;
+   LDC nldc;
+  
    
+  LDC *TC=(LDC*)malloc((G->nbcoul)*sizeof(LDC));
+
+  for(f=0; f<G->nbcoul; f++){
+   
+    LDCInitialise(&nldc);
+      TC[f]=nldc;
+  }
+      
+  printf("%d %d\n", TC[1], TC[9]);
+  printf("nb ligne:%d nb colonne:%d\n", G->m, G->n);
+
+  
+  for(i=(G->n)-1; i>=0; i--){
+     for(j=0; j<G->m; j++){
+      
+       if(LDCVide(&TC[G->T[j][i].fond])){
+	 printf("ok \n");
+	
+	LDCInitialise(&TC[G->T[j][i].fond]);
+	LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
+	
+
+       }else{
+	 LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
+      }
+    }
+  }
+
+  for(f=0; f<G->nbcoul; f++){
+  LDCafficher(&TC[f]);
+  printf("\n");
+  }
+  /*
+  while(it>=0){
+    if((G->T[a][b].robot==-1)){
+    
+    swap_case(G);
+    Ajout_action(S, 'S');
+    couleur_piece=G->T[a][b]->piece;
+
+    CelluleLDC *case=LDCrechercherPlusProcheCase(TC[couleur_piece], int a, int b);
+
+    changement_case(G, case->i, case->j);
+    swap_case(G);
+    Ajout_action(S, 'S');
+
+    a=case->i;
+    b=case->j;
+
+    it--;
+    
+    }else{
+
+       couleur_piece=G->T[a][b]->piece;
+
+    CelluleLDC *case=LDCrechercherPlusProcheCase(TC[couleur_piece], int a, int b);
+
+    changement_case(G, case->i, case->j);
+    swap_case(G);
+    Ajout_action(S, 'S');
+
+    a=case->i;
+    b=case->j;
+
+    it--;
+    }
+  }
+  */
+}
+      
+    
+    
+    
