@@ -4,7 +4,6 @@
 #include "Grille.h"
 #include "Solution.h"
 #include "API_AffGrille.h"
-#include "fonctions_ex1_p1.h"
 
 void affichage(int ligne, int colonne, Grille G)
 {
@@ -17,6 +16,7 @@ void affichage(int ligne, int colonne, Grille G)
     printf("\n");
   }
 }
+
 
 /***********************************
 Fonction plus court chemin :
@@ -50,12 +50,13 @@ Verifie si case est noire
 ***********************************/
 int CaseEstNoire(Grille* G, int i, int j)
 {
-  CCase c=G->T[i][j];
-  if(c.fond==c.piece){ 
-    return 1;
-  }else{ 
-    return 0;
-  }
+	CCase c=G->T[i][j];
+	if(c.fond==c.piece){ 
+	  return 1;
+	} 	
+	else{ 
+	  return 0;
+	}
 }
 
 /***********************************
@@ -73,18 +74,17 @@ int PieceEstPasNoire(Grille* G, int i, int j)
 }
 
 /***********************************
-Verifie si robot porte une piece de couleur
+
 ***********************************/
 int RobotPortePieceCouleur(Grille* G){ 
-  CCase c=G->T[G->ir][G->jr];
-  return c.robot;
+	CCase c=G->T[G->ir][G->jr];
+	return c.robot;
 }
 
 /***********************************
-Recherche la case de couleur c la plus proche
-d'un point donné
+
 ***********************************/
-void RechercheCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l)
+void RechercheCaseNaif_c(Grille *G, int c,int i, int j, int *k, int *l)
 {
   int x, y;
   int cpt=0;
@@ -110,14 +110,14 @@ void RechercheCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l)
       if((G->T[a][b].fond==c)){
 	if(CaseEstNoire(G, a, b)==0){
     
-	  tab[p]=abs(a-i)+abs(b-j);
-	  if(tab[p]<min){
-	    min=tab[p];
-	    *k=a;
-	    *l=b;
-	  }
+
+	if(tab[p]<min){
+	  min=tab[p];
+	  *k=a;
+	  *l=b;
+	}
 	
-	  p++;
+	p++;
 	}
       }
     }
@@ -125,12 +125,11 @@ void RechercheCaseNaif_c(Grille *G, int c, int i, int j, int *k, int *l)
 }
 
 /***********************************
-Recherche la première case non-noire
-la plus proche d'un point donné
+
 ***********************************/
 int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 {
-  int x, y;
+   int x, y;
   int cpt=0;
   int a, b;
   int *tab;
@@ -152,7 +151,8 @@ int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
       
       if((PieceEstPasNoire(G, a, b)==1) && ((a!=i) || (b!=j))){
 
-	tab[p]=abs(a-i)+abs(b-j);
+
+
 	if(tab[p]<min){
 	  min=tab[p];
 	  *k=a;
@@ -167,42 +167,133 @@ int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 }
 
 /***********************************
-Résolution de la grille de jeu
-grace à l'algo naif 
+
 ***********************************/
+
 void algo_naif(Grille *G, Solution *S)
 {
   int i=0;
   int j=0;
   int k, l;
 
-  while((RechercheCaseNaif_nn(G, i, j, &k, &l))>0){
+  while((RechercheCaseNaif_nn(G, i, j, &k, &l)>0)){
     if((G->T[i][j].robot==-1)){
       swap_case(G);
-      Ajout_action(S,'S');
       RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
       PlusCourtChemin(S,i,j,k,l);
       changement_case(G, k, l);
-      swap_case(G);
       Ajout_action(S,'S');
+      swap_case(G);
       i=k;
       j=l;
+     
       
     }else{
       RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
       PlusCourtChemin(S,i,j,k,l);
       changement_case(G, k, l);
-      swap_case(G);
       Ajout_action(S,'S');
+      swap_case(G);
       i=k;
       j=l;
+     
     }
   }
-  
   RechercheCaseNaif_c(G, G->T[i][j].robot, i, j, &k, &l);
   PlusCourtChemin(S,i,j,k,l);
   changement_case(G, k, l);
   Ajout_action(S,'S');
   swap_case(G);
+  i=k;
+  j=l;  
 }
 
+/**********************************/
+/***** EXERCICE 2 *****************/
+/**********************************/
+
+void RechercheCaseCirc_c(Grille *G, int c,int i, int j, int *k, int *l){
+  int L=1,lg,ld;
+  while(L>-1){
+    *k=i-L;
+    lg=j;
+    ld=j;
+    while(*k<=i){
+      if(G->T[k][ld])
+	if(G->T[k][lg].piece==c){
+	  *l=lg;
+	  return;
+	}
+      if(G->T[k][ld])
+	if(G->T[k][ld].piece==c){
+	  *l=ld;
+	  return;
+	}
+      i++;
+      lg--;
+      ld++;
+    }
+    k=i+1;
+    lg=j-L+1;
+    ld=j+L-1;
+    while(k<=i+L){
+      if(G->T[k][ld])
+	if(G->T[k][lg].piece==c){
+	  *l=lg;
+	  return;
+	}
+      if(G->T[k][ld])
+	if(G->T[k][ld].piece==c){
+	  *l=ld;
+	  return;
+	}
+      i++;
+      lg++;
+      ld--;
+    }
+  }
+}
+
+void RechercheCaseCirc_nn(Grille *G, int c,int i, int j, int *k, int *l){
+  int L=1,lg,ld;
+  while(L>-1){
+    *k=i-L;
+    lg=j;
+    ld=j;
+    while(*k<=i){
+      if(G->T[k][ld])
+	if(G->T[k][lg].piece==-1){
+	  *l=lg;
+	  return;
+	}
+      if(G->T[k][ld])
+	if(G->T[k][ld].piece==-1){
+	  *l=ld;
+	  return;
+	}
+      i++;
+      lg--;
+      ld++;
+    }
+    k=i+1;
+    lg=j-L+1;
+    ld=j+L-1;
+    while(k<=i+L){
+      if(G->T[k][ld])
+	if(G->T[k][lg].piece==-1){
+	  *l=lg;
+	  return;
+	}
+      if(G->T[k][ld])
+	if(G->T[k][ld].piece==-1){
+	  *l=ld;
+	  return;
+	}
+      i++;
+      lg++;
+      ld--;
+    }
+  }
+}
+
+  

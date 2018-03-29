@@ -109,11 +109,7 @@ CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b)
   CelluleLDC *cel=ldc->premier;
   CelluleLDC *celMini=creerCellule(cel->i, cel->j);
 
-  printf("%d %d, somme : %d\n", celMini->i, celMini->j, ( abs((celMini->i)-a)+abs((celMini->j)-b) ));
-  
   while(cel->suiv){
-    printf("%d %d, somme : %d\n", celMini->i, celMini->j, ( abs((celMini->i)-a)+abs((celMini->j)-b) ));
-
     
     if(  ( abs((cel->suiv->i)-a)+abs((cel->suiv->j)-b) ) < ( abs((celMini->i)-a)+abs((celMini->j)-b) )   ){
 
@@ -128,85 +124,131 @@ CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b)
   return celMini;
 }
 
+/* Trouve le nombre de case noire dans une GRille */
+int nbCaseNoire(Grille *G)
+{
+  int i, j;
+  int cpt=0;
+
+  for(i=0; i<G->m; i++){
+    for(j=0; j<G->n; j++){
+      if(CaseEstNoire(G, i, j)==1){
+	cpt++;
+      }
+    }
+  }
+  return cpt;
+}
+      
+
+/*************************************
+Algo par couleur
+*************************************/
 void algo_parcouleur(Grille *G, Solution *S)
 {
-  int f, i, j;
+  int f, i, j, p, q;
   int k=0;
   int it=(G->m)*(G->n);
   int a=0;
   int b=0;
-  int couleur_piece;
-   LDC nldc;
-  
-   
+  int couleur_piece_robot;
+  LDC nldc;
+ 
+  /* Creation du tableau */
   LDC *TC=(LDC*)malloc((G->nbcoul)*sizeof(LDC));
 
-  for(f=0; f<G->nbcoul; f++){
-   
+  /* Initialisation des valeurs du tableau */
+  for(f=0; f<G->nbcoul; f++){  
     LDCInitialise(&nldc);
-      TC[f]=nldc;
+    TC[f]=nldc;
   }
-      
+
   printf("%d %d\n", TC[1], TC[9]);
   printf("nb ligne:%d nb colonne:%d\n", G->m, G->n);
 
-  
+  /* Rempli les cases du tableau avec les LDC */ 
   for(i=(G->n)-1; i>=0; i--){
-     for(j=0; j<G->m; j++){
+    for(j=0; j<G->m; j++){
       
-       if(LDCVide(&TC[G->T[j][i].fond])){
-	 printf("ok \n");
-	
+      if(LDCVide(&TC[G->T[j][i].fond]) && CaseEstNoire(G, j, i)==0){
+
 	LDCInitialise(&TC[G->T[j][i].fond]);
 	LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
-	
 
-       }else{
-	 LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
+      }else{
+	if(CaseEstNoire(G, j, i)==0){
+	LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
+	}
       }
     }
   }
 
+  /* Affichage du tableau de LDC */
   for(f=0; f<G->nbcoul; f++){
-  LDCafficher(&TC[f]);
-  printf("\n");
+    LDCafficher(&TC[f]);
   }
-  /*
-  while(it>=0){
-    if((G->T[a][b].robot==-1)){
-    
-    swap_case(G);
-    Ajout_action(S, 'S');
-    couleur_piece=G->T[a][b]->piece;
+  
+  printf("nb case noire dans Grille : %d \n",nbCaseNoire(G));
+  
+  
+  while(it!=nbCaseNoire(G)){
+    if((G->T[a][b].robot==-1) && (PieceEstPasNoire(G, a, b))==1){
+   
+      swap_case(G);
+      Ajout_action(S, 'S');
+      couleur_piece_robot=G->T[a][b].robot;
+      printf("ok couleur piece : %d \n", couleur_piece_robot);
+      CelluleLDC *cel=LDCrechercherPlusProcheCase(&TC[couleur_piece_robot], a, b);
+      changement_case(G, cel->i, cel->j);
+      PlusCourtChemin(S, a, b, cel->i, cel->j);
+      swap_case(G);
+      Ajout_action(S, 'S');
+      LDC_enleverCellule(&TC[couleur_piece_robot], cel);
 
-    CelluleLDC *case=LDCrechercherPlusProcheCase(TC[couleur_piece], int a, int b);
+      a=cel->i;
+      b=cel->j;
 
-    changement_case(G, case->i, case->j);
-    swap_case(G);
-    Ajout_action(S, 'S');
+    }if((G->T[a][b].robot==-1) && (CaseEstNoire(G, a, b)==1)){
+      RechercheCaseNaif_nn(G, a, b, &p, &q);
+      changement_case(G, p, q);
 
-    a=case->i;
-    b=case->j;
+      swap_case(G);
+      Ajout_action(S, 'S');
+      couleur_piece_robot=G->T[p][q].robot;
+      printf("ok couleur piece : %d \n", couleur_piece_robot);
+      CelluleLDC *cel=LDCrechercherPlusProcheCase(&TC[couleur_piece_robot], p, q);
+      changement_case(G, cel->i, cel->j);
+      PlusCourtChemin(S, a, b, cel->i, cel->j);
+      swap_case(G);
+      Ajout_action(S, 'S');
+      LDC_enleverCellule(&TC[couleur_piece_robot], cel);
 
-    it--;
-    
+      a=cel->i;
+      b=cel->j;
+
     }else{
+      couleur_piece_robot=G->T[a][b].robot;
+      CelluleLDC *cel=LDCrechercherPlusProcheCase(&TC[couleur_piece_robot], a, b);
+     
+      changement_case(G, cel->i, cel->j);
+      PlusCourtChemin(S, a, b, cel->i, cel->j);
+      swap_case(G);
+      Ajout_action(S, 'S');
+      LDC_enleverCellule(&TC[couleur_piece_robot], cel);
 
-       couleur_piece=G->T[a][b]->piece;
+      a=cel->i;
+      b=cel->j;
+      printf("ok 2\n");
+      
+     
 
-    CelluleLDC *case=LDCrechercherPlusProcheCase(TC[couleur_piece], int a, int b);
+	
 
-    changement_case(G, case->i, case->j);
-    swap_case(G);
-    Ajout_action(S, 'S');
-
-    a=case->i;
-    b=case->j;
-
-    it--;
     }
+
+  
   }
-  */
+  
 }
       
     

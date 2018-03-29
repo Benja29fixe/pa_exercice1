@@ -1,3 +1,5 @@
+
+
 /**************************/
 /* structure celluleLDC ***/
 /**************************/
@@ -41,7 +43,5 @@ void LDCdesalloue(LDC *ldc);
 // qui desalloue toute la liste (si elle n est pas vide a la fin)
 
 CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b);
-
-int nbCaseNoire(Grille *G);
 
 void algo_parcouleur(Grille *G, Solution *S);
