@@ -170,6 +170,7 @@ int RechercheCaseNaif_nn(Grille *G, int i, int j, int *k, int *l)
 Résolution de la grille de jeu
 grace à l'algo naif 
 ***********************************/
+
 void algo_naif(Grille *G, Solution *S)
 {
   int i=0;

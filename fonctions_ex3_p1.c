@@ -104,6 +104,7 @@ void LDCdesalloue(LDC *ldc)
   }
 }
 
+/* Renvoie la case la plus proche d'un point de coordonnées (a,b) */
 CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b)
 {
   CelluleLDC *cel=ldc->premier;
@@ -111,7 +112,7 @@ CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b)
 
   while(cel->suiv){
     
-    if(  ( abs((cel->suiv->i)-a)+abs((cel->suiv->j)-b) ) < ( abs((celMini->i)-a)+abs((celMini->j)-b) )   ){
+    if(( abs((cel->suiv->i)-a)+abs((cel->suiv->j)-b)) < ( abs((celMini->i)-a)+abs((celMini->j)-b))){
 
       celMini->i=cel->suiv->i;
       celMini->j=cel->suiv->j;
@@ -140,7 +141,6 @@ int nbCaseNoire(Grille *G)
   return cpt;
 }
       
-
 /*************************************
 Algo par couleur
 *************************************/
@@ -177,7 +177,7 @@ void algo_parcouleur(Grille *G, Solution *S)
 
       }else{
 	if(CaseEstNoire(G, j, i)==0){
-	LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
+	  LDCInsererEnFin(&TC[G->T[j][i].fond], j, i);
 	}
       }
     }
@@ -197,7 +197,7 @@ void algo_parcouleur(Grille *G, Solution *S)
       swap_case(G);
       Ajout_action(S, 'S');
       couleur_piece_robot=G->T[a][b].robot;
-      printf("ok couleur piece : %d \n", couleur_piece_robot);
+ 
       CelluleLDC *cel=LDCrechercherPlusProcheCase(&TC[couleur_piece_robot], a, b);
       changement_case(G, cel->i, cel->j);
       PlusCourtChemin(S, a, b, cel->i, cel->j);
@@ -215,7 +215,6 @@ void algo_parcouleur(Grille *G, Solution *S)
       swap_case(G);
       Ajout_action(S, 'S');
       couleur_piece_robot=G->T[p][q].robot;
-      printf("ok couleur piece : %d \n", couleur_piece_robot);
       CelluleLDC *cel=LDCrechercherPlusProcheCase(&TC[couleur_piece_robot], p, q);
       changement_case(G, cel->i, cel->j);
       PlusCourtChemin(S, a, b, cel->i, cel->j);
@@ -238,17 +237,8 @@ void algo_parcouleur(Grille *G, Solution *S)
 
       a=cel->i;
       b=cel->j;
-      printf("ok 2\n");
-      
-     
-
-	
-
     }
-
-  
-  }
-  
+  }  
 }
       
     

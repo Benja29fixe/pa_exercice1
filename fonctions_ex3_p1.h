@@ -8,9 +8,10 @@ typedef struct celluleLDC{
   struct celluleLDC *suiv; 
 }CelluleLDC;
 
-/**************************/
-/* structure LDC **********/
-/**************************/
+/********************************/
+/* structure ********************/
+/* Liste Doublement Chainée LDC */
+/********************************/
 typedef struct{
   struct celluleLDC *premier;
   struct celluleLDC *dernier;
@@ -21,7 +22,7 @@ typedef struct{
 /**************************/
 CelluleLDC *creerCellule(int i ,int j);
 // qui alloue et retourne une cellule
-
+2
 void LDCInitialise(LDC *ldc);
 // qui initialise une liste
 
@@ -41,7 +42,10 @@ void LDCdesalloue(LDC *ldc);
 // qui desalloue toute la liste (si elle n est pas vide a la fin)
 
 CelluleLDC *LDCrechercherPlusProcheCase(LDC *ldc, int a, int b);
+// qui recherche la case la plus proche par LDC
 
 int nbCaseNoire(Grille *G);
+// renvoie le nombre de case noire
 
 void algo_parcouleur(Grille *G, Solution *S);
+// l'ALGO par couleur

@@ -6,7 +6,9 @@
 #include "Solution.h"
 #include "API_AffGrille.h"
 #include "fonctions_ex1_p1.h"
+#include "fonctions_ex2_p1.h"
 #include "fonctions_ex3_p1.h"
+#include "fonctions_ex4_p1.h"
 
 int main(int argc,char**argv){
   
@@ -16,11 +18,16 @@ int main(int argc,char**argv){
   int graine;
   int i,j;
   int num_algo;
- 
   int nb1, nb2, nb3, nb4, nb5;
-  int k, l;
   LDC ldc;
+  clock_t temps_initial;
+  clock_t temps_final;
+  double temps_cpu;
+  FILE *f1, *f3;
+  
 
+  /* les différents arguments */
+  
   if(argc!=6){
     printf("usage: %s <nb_lignes> <nb_colonnes> <nb_couleur> <graine> <choix de l'algo>\n",argv[0]);
     printf("+--- Choix de l'algo ----------------------+\n");
@@ -50,15 +57,15 @@ int main(int argc,char**argv){
   num_algo=atoi(argv[5]);
 
   /* Generation de l'instance */
-
   Grille_allocation(&G);
   Gene_Grille(&G,graine);
   Solution_init(&S);
 
-  /*Premier affichage de la grille sur le terminal*/
+  /* Premier affichage de la grille sur le terminal*/
   affichage(G.m, G.n, G);
 
-  printf("+------------------------------------------+\n");
+  /* Les 4 algorithmes de la partie 1 */
+  printf("+---Choix de l'algorithme------------------+\n");
   printf("|1 : algorithme naif                       |\n");
   printf("|2 : algorithme circulaire                 |\n");
   printf("|3 : algorithme par couleur                |\n");
@@ -70,62 +77,114 @@ int main(int argc,char**argv){
   switch(num_algo)
     {
 
+      /*****************************************/
+      /**** EXERCICE 1 : ALGO NAIF *************/
+      /*****************************************/
     case 1:
       printf("ALGO NAIF \n");
       printf("========= \n");
-      RechercheCaseNaif_c(&G, 1, 0, 0, &nb1, &nb2);
-      printf("<%d %d>\n", nb1, nb2);
-  
-  
-      nb5=RechercheCaseNaif_nn(&G, 0, 0, &nb3, &nb4);
-      printf("\n1ere case nn et piece nn : <%d %d>\ncpt : %d\n", nb3, nb4, nb5);
 
-      printf("\n");
-  
-      /**** EXERCICE 1 : ALGO NAIF ****/
+       /*******************************/
+      f1=fopen("temps/algo_naif.temps", "a");
+      /*******************************/
+      /* Execution de l'algorithme naif */
+       /*******************************/
+      temps_initial=clock();
+      /*******************************/
       algo_naif(&G, &S);
+      /*******************************/
+      temps_final=clock();
+      temps_cpu =((double)(temps_final-temps_initial))/ CLOCKS_PER_SEC;
+      fprintf(f1, "%d %d %d %f\n", G.m, G.n, G.nbcoul, temps_cpu);
+      fclose(f1);
+      /*******************************/
       Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
   
-      /*Après algo_naif, affichage de la grille sur le terminal*/
+      /* Après algo_naif, affichage de la grille sur le terminal */
       affichage(G.m, G.n, G);
 
       /* Affiche le nombre de pas et le chemin */
       Affiche(&S);
       break;
-      
-      /***********************************/
-      /**** EXERCICE 3 : ALGO COULEUR ****/
-      /***********************************/
-    case 3:
-      printf("ALGO PAR COULEUR \n");
-      printf("================ \n");
-  
-      LDCInitialise(&ldc);
-      printf("\nliste vide : %d\n", LDCVide(&ldc));
 
-      LDCInsererEnFin(&ldc, 3, 5);
-      LDCInsererEnFin(&ldc, 4, 32);
-      LDCInsererEnFin(&ldc, 9, 10);
-      LDCInsererEnFin(&ldc, 51, 78);
-  
-      /*Affichage de la liste ldc */
-      LDCafficher(&ldc);
-
-      CelluleLDC *c1=LDCrechercherPlusProcheCase(&ldc, 50, 78);
-
-      printf("case la p proche : %d %d\n", c1->i, c1->j);
-
-      algo_parcouleur(&G, &S);
-
+      /*****************************************/
+      /**** EXERCICE 2 : ALGO CIRCULAIRE *******/
+      /*****************************************/
+    case 2:
+      printf("ALGO CIRCULAIRE \n");
+      printf("=============== \n");
+     
+      algorithme_circulaire(&G, &S);
       Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
   
-      /*Après algo_naif, affichage de la grille sur le terminal*/
+      /* Après algo circulaire, affichage de la grille sur le terminal */
       affichage(G.m, G.n, G);
 
       /* Affiche le nombre de pas et le chemin */
       Affiche(&S);
 
+      break;
       
+      /*****************************************/
+      /**** EXERCICE 3 : ALGO COULEUR **********/
+      /*****************************************/
+    case 3:
+      printf("ALGO PAR COULEUR \n");
+      printf("================ \n");
+  
+      LDCInitialise(&ldc);
+
+       /*******************************/
+      f3=fopen("temps/algo_couleur.temps", "a");
+      /*******************************/
+      /* Execution de l'algorithme par couleur */
+       /*******************************/
+      temps_initial=clock();
+      /*******************************/
+      algo_parcouleur(&G, &S);
+       /*******************************/
+      temps_final=clock();
+      temps_cpu =((double)(temps_final-temps_initial))/ CLOCKS_PER_SEC;
+      fprintf(f3, "%d %d %d %f\n", G.m, G.n, G.nbcoul, temps_cpu);
+      fclose(f3);
+      /*******************************/
+
+      Ecriture_Disque(G.m, G.n, G.nbcoul, graine, &S);
+  
+      /*Après algo_parcouleur, affichage de la grille sur le terminal*/
+      affichage(G.m, G.n, G);
+
+      /* Affiche le nombre de pas et le chemin */
+      Affiche(&S);
+      
+      break;
+
+      /*****************************************/
+      /**** EXERCICE 4 : ALGO AVL ***************/
+      /******************************************/
+    case 4:
+
+      printf("-----------------------\n");
+      printf("Test fonctions AVL\n");
+      printf("==================\n");
+      
+      AVL *ab1=creer_avl(7, creer_avl(3, creer_avl(2, NULL, NULL), NULL), creer_avl(12, NULL, NULL));
+	    
+      printf("Affichage infixe de l'arbre : ");    
+      affichage_infixe(ab1);
+      printf("\nHauteur de l'arbre : %d\n", ab1->hauteur);
+     
+      AVL *ab3=creer_avl(5, NULL, NULL); 
+      ab3=inserer_element_avl(ab3, 12);
+      ab3=inserer_element_avl(ab3, 1);
+      ab3=inserer_element_avl(ab3, 9);
+      ab3=inserer_element_avl(ab3, 8);
+      ab3=inserer_element_avl(ab3, 7);
+      ab3=inserer_element_avl(ab3, 6);
+      affichage_infixe(ab3);
+	   
+      printf("\n-----------------------\n");
+	     
       break;
       
       return 0;
