@@ -1,4 +1,4 @@
-#include <stdio.h>
+ #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
@@ -16,7 +16,7 @@ int main(int argc,char**argv){
   AffGrille AG;
   Solution S;
   int graine;
-  int i,j;
+  int i,j, m;
   int num_algo;
   int nb1, nb2, nb3, nb4, nb5;
   LDC ldc;
@@ -168,21 +168,22 @@ int main(int argc,char**argv){
       printf("Test fonctions AVL\n");
       printf("==================\n");
       
-      AVL *ab1=creer_avl(7, creer_avl(3, creer_avl(2, NULL, NULL), NULL), creer_avl(12, NULL, NULL));
-	    
-      printf("Affichage infixe de l'arbre : ");    
-      affichage_infixe(ab1);
-      printf("\nHauteur de l'arbre : %d\n", ab1->hauteur);
-     
-      AVL *ab3=creer_avl(5, NULL, NULL); 
-      ab3=inserer_element_avl(ab3, 12);
-      ab3=inserer_element_avl(ab3, 1);
-      ab3=inserer_element_avl(ab3, 9);
-      ab3=inserer_element_avl(ab3, 8);
-      ab3=inserer_element_avl(ab3, 7);
-      ab3=inserer_element_avl(ab3, 6);
-      affichage_infixe(ab3);
-	   
+     AVL *a1=creer(10, creer(9, NULL, NULL), creer(23, NULL,NULL));
+    printf("\n");
+    
+    afficher(a1);
+    printf("\nHauteur : %d >>> fg>[%d] fd>[%d] // %d \n", a1->haut, hauteur(a1->fg), hauteur(a1->fd), a1->content);
+
+
+   
+    srand(time(NULL));
+    for(m=0; m<10; m++){
+      a1=ins(a1, rand()%100);
+      afficher(a1);
+      printf("\nHauteur arbre: [%d] /hauteur->fg=%d / hauteur->fd=%d / racine : [%d] \n\n", a1->haut, hauteur(a1->fg), hauteur(a1->fd), a1->content);
+    }
+
+    
       printf("\n-----------------------\n");
 	     
       break;

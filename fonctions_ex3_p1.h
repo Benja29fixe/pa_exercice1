@@ -22,7 +22,6 @@ typedef struct{
 /**************************/
 CelluleLDC *creerCellule(int i ,int j);
 // qui alloue et retourne une cellule
-2
 void LDCInitialise(LDC *ldc);
 // qui initialise une liste
 
