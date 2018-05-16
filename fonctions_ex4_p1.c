@@ -12,10 +12,10 @@
  */ 
 int max(int a, int b)
 {
-    if(a<b)
-        return b;
-    else
-        return a;
+  if(a<b)
+    return b;
+  else
+    return a;
 }
 
 /****************************
@@ -23,10 +23,10 @@ int max(int a, int b)
  */ 
 int hauteur(AVL *ab)
 {
-    if(ab==NULL)
-        return -1;
-    else
-        return 1+max(hauteur(ab->fg), hauteur(ab->fd));
+  if(ab==NULL)
+    return -1;
+  else
+    return 1+max(hauteur(ab->fg), hauteur(ab->fd));
 }
 
 /****************************
@@ -34,14 +34,14 @@ int hauteur(AVL *ab)
  */ 
 AVL *creer(int val, AVL *gauche, AVL *droite)
 {
-    AVL *nv=(AVL*)malloc(sizeof(AVL));
+  AVL *nv=(AVL*)malloc(sizeof(AVL));
 
-    nv->content=val;
-    nv->haut=0;
-    nv->fg=gauche;
-    nv->fd=droite;
+  nv->content=val;
+  nv->haut=0;
+  nv->fg=gauche;
+  nv->fd=droite;
 
-    return nv;
+  return nv;
 }
 
 /****************************
@@ -49,11 +49,11 @@ AVL *creer(int val, AVL *gauche, AVL *droite)
  */ 
 void afficher(AVL *ab)
 {
-    if(ab!=NULL)
+  if(ab!=NULL)
     {
-        afficher(ab->fg);
-        printf("%d ", ab->content);
-        afficher(ab->fd);
+      afficher(ab->fg);
+      printf("%d ", ab->content);
+      afficher(ab->fd);
     }
 }
 
@@ -89,14 +89,14 @@ AVL *exist_avl(AVL *ab, int val)
  */ 
 AVL *rot_droite(AVL *ab)
 {
-    AVL *nv=ab->fg;
-    ab->fg=nv->fd;
-    nv->fd=ab;
+  AVL *nv=ab->fg;
+  ab->fg=nv->fd;
+  nv->fd=ab;
 
-    maj(ab);
-    maj(nv);
+  maj(ab);
+  maj(nv);
 
-    return nv;
+  return nv;
 }
 
 /****************************
@@ -104,14 +104,14 @@ AVL *rot_droite(AVL *ab)
  */ 
 AVL *rot_gauche(AVL *ab)
 {
-    AVL *nv=ab->fd;
-    ab->fd=nv->fg;
-    nv->fg=ab;
+  AVL *nv=ab->fd;
+  ab->fd=nv->fg;
+  nv->fg=ab;
 
-    maj(ab);
-    maj(nv);
+  maj(ab);
+  maj(nv);
 
-    return nv;
+  return nv;
 }
 
 /****************************
@@ -119,9 +119,9 @@ AVL *rot_gauche(AVL *ab)
  */ 
 void maj(AVL *ab)
 {
-    if(ab!=NULL)
+  if(ab!=NULL)
     {
-        ab->haut=1+max(hauteur(ab->fg), hauteur(ab->fd));
+      ab->haut=1+max(hauteur(ab->fg), hauteur(ab->fd));
     }
 }
 
@@ -130,39 +130,39 @@ void maj(AVL *ab)
  */ 
 AVL *inserer(AVL *ab, int val)
 {
-    if(ab==NULL)
+  if(ab==NULL)
     {
-        return creer(val, NULL, NULL);
+      return creer(val, NULL, NULL);
     }
 
-    if(ab->content>val)
+  if(ab->content>val)
     {
-        if(ab->fg==NULL)
+      if(ab->fg==NULL)
         {
-            AVL *temp=creer(val, NULL, NULL);
-            ab->fg=temp;
+	  AVL *temp=creer(val, NULL, NULL);
+	  ab->fg=temp;
         }
-        else
+      else
         {
-            ab->fg=inserer(ab->fg, val);
+	  ab->fg=inserer(ab->fg, val);
         }
     }
-    else
+  else
     {
-        if(ab->fd==NULL)
+      if(ab->fd==NULL)
         {
-            AVL *temp=creer(val, NULL, NULL);
-            ab->fd=temp;
+	  AVL *temp=creer(val, NULL, NULL);
+	  ab->fd=temp;
         }
-        else
+      else
         {
-            ab->fd=inserer(ab->fd, val);
+	  ab->fd=inserer(ab->fd, val);
         }
     }
 
-    maj(ab);
+  maj(ab);
 
-    return ab;
+  return ab;
 }
 
 /****************************
@@ -170,20 +170,20 @@ AVL *inserer(AVL *ab, int val)
  */ 
 AVL *eq(AVL *ab)
 {
-    int hfg=hauteur(ab->fg);
-    int hfd=hauteur(ab->fd);
+  int hfg=hauteur(ab->fg);
+  int hfd=hauteur(ab->fd);
 
-    if(hfg-hfd == 2)
+  if(hfg-hfd == 2)
     {
-        ab=rot_droite(ab);
+      ab=rot_droite(ab);
     }
 
-    if(hfg-hfd==-2)
+  if(hfg-hfd==-2)
     {
-        ab=rot_gauche(ab);
+      ab=rot_gauche(ab);
     }
 
-    return ab;
+  return ab;
 }
 
 /****************************
@@ -191,9 +191,9 @@ AVL *eq(AVL *ab)
  */ 
 AVL *ins(AVL *ab, int val)
 {
-    ab=eq(inserer(ab, val));
+  ab=eq(inserer(ab, val));
 
-    return ab;
+  return ab;
 }
 
 /****************************

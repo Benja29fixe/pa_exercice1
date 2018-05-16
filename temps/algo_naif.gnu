@@ -1,6 +1,6 @@
 set terminal pngcairo size 1000, 600
 set output 'algo_naif.png'
-set xlabel "nombre de colonnes"
+set xlabel "nombre de colonnes (=nombre de lignes +1)"
 set ylabel "temps (s)"
 set title "1/ Algorithme naif"
 set style line 10 linetype 1 \

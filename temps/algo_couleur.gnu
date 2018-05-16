@@ -4,6 +4,7 @@ set xlabel "nombre de colonnes (= nombre de lignes+1)"
 set ylabel "temps (s)"
 set title "3/ Algorithme par couleur"
 set style line 10 linetype 1 \
+    	       	  linecolor rgb "#555555" \
     	       	  linewidth 3
 
 set key on inside top left
